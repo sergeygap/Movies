@@ -15,4 +15,10 @@ public class Rating {
         return this.kp;
     }
 
+    @Override
+    public String toString() {
+        return "Rating{" +
+                "kp='" + kp + '\'' +
+                '}';
+    }
 }

@@ -48,4 +48,16 @@ public class Movie {
     public Logo getLogo() {
         return logo;
     }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", year='" + year + '\'' +
+                ", rating=" + rating +
+                ", logo=" + logo +
+                '}';
+    }
 }

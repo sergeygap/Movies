@@ -14,4 +14,11 @@ public class Logo {
         return url;
     }
 
+
+    @Override
+    public String toString() {
+        return "Logo{" +
+                "url='" + url + '\'' +
+                '}';
+    }
 }
