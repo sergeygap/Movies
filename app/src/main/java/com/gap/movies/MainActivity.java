@@ -1,40 +1,35 @@
 package com.gap.movies;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.gap.movies.data.MainResponse;
-import com.gap.movies.retrofit.ApiFactory;
+import com.gap.movies.data.Movie;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import java.util.List;
+
+import io.reactivex.rxjava3.internal.operators.maybe.MaybeUnsafeCreate;
 
 public class MainActivity extends AppCompatActivity {
+    private final String TAG = "MainActivityResponse";
+    private  MainViewModel mainViewModel;
 
-    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        mainViewModel.getMovie().observe(this, new Observer<List<Movie>>() {
+            @Override
+            public void onChanged(List<Movie> movies) {
+                Log.d(TAG, movies.toString());
+            }
+        });
 
-        ApiFactory.apiService.loadMovies()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<MainResponse>() {
-                    @Override
-                    public void accept(MainResponse mainResponse) throws Throwable {
-                        Log.d("OnCreateResponse", mainResponse.toString());
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Throwable {
-                        Log.d("OnCreateResponse", throwable.toString());
-                    }
-                });
+        mainViewModel.loadMovies();
 
     }
 }
