@@ -6,7 +6,9 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.gap.movies.adapters.MoviesAdapter;
 import com.gap.movies.data.Movie;
 
 import java.util.List;
@@ -17,14 +19,23 @@ public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivityResponse";
     private  MainViewModel mainViewModel;
 
+    private RecyclerView recyclerView;
+    private MoviesAdapter moviesAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        recyclerView = findViewById(R.id.recyclerViewMovies);
+        moviesAdapter = new MoviesAdapter();
+        recyclerView.setAdapter(moviesAdapter);
+
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         mainViewModel.getMovie().observe(this, new Observer<List<Movie>>() {
             @Override
             public void onChanged(List<Movie> movies) {
+                moviesAdapter.setMovies(movies);
                 Log.d(TAG, movies.toString());
             }
         });
