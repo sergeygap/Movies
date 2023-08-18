@@ -1,6 +1,7 @@
 package com.gap.movies.adapters;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,12 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
 
     private List<Movie> moviesList = new ArrayList<>();
+    private OnReachEndListener onReachEndListener;
+
+    public void setOnReachEndListener(OnReachEndListener onReachEndListener) {
+        this.onReachEndListener = onReachEndListener;
+    }
+
 
     @SuppressLint("NotifyDataSetChanged")
     public void setMovies(List<Movie> movies) {
@@ -40,6 +47,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
+        Log.d("MoviesAdapter", "onBindViewHolder: " + position);
         Movie movie = moviesList.get(position);
         if (movie.getLogo() != null) {
             Glide.with(holder.itemView)
@@ -51,14 +59,33 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
                     .into(holder.imageViewLogo);
         }
 
-        String text = movie.getRating().getKp().substring(0, 3);
-        holder.textViewRating.setText(text);
+        double rating = movie.getRating().getKp();
+        int backgroundId;
+        if (rating > 7) {
+            backgroundId = R.drawable.circle_green;
+        } else if (rating > 5) {
+            backgroundId = R.drawable.circle_orange;
+        } else {
+            backgroundId = R.drawable.circle_red;
+        }
+        holder.textViewRating.setBackgroundResource(backgroundId);
+        holder.textViewRating.setText(String.valueOf(rating).substring(0, 3));
+
+        if (position == moviesList.size() - 1 && onReachEndListener != null) {
+            onReachEndListener.onReachEnd();
+        }
+
     }
 
     @Override
     public int getItemCount() {
         return moviesList.size();
     }
+
+    public interface OnReachEndListener {
+        void onReachEnd();
+    }
+
 
     static class MovieViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imageViewLogo;

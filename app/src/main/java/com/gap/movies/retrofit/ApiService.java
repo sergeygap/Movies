@@ -13,6 +13,6 @@ public interface ApiService {
             "Accept: application/json",
             "X-API-KEY: 5D96XZC-7XRMEGE-NGYBX3W-XWESWSB"
     })
-    @GET("movie?&limit=5&field=rating.kp&search=7-10&sortField=votes.kp&sortType=-1")// изначально здесь было page = 5
+    @GET("movie?&limit=30&field=rating.kp&search=4-10&sortField=votes.kp&sortType=-1")// изначально здесь было page = 5
     Single<MainResponse> loadMovies(@Query("page") int page);// dynamic query
 }
