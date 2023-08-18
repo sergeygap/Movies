@@ -41,10 +41,18 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         Movie movie = moviesList.get(position);
-        Glide.with(holder.itemView)
-                .load(movie.getLogo().getUrl())
-                .into(holder.imageViewLogo);
-        holder.textViewRating.setText(movie.getRating().getKp());
+        if (movie.getLogo() != null) {
+            Glide.with(holder.itemView)
+                    .load(movie.getLogo().getUrl())
+                    .into(holder.imageViewLogo);
+        } else {
+            Glide.with(holder.itemView)
+                    .load(R.drawable.ic_launcher_foreground)
+                    .into(holder.imageViewLogo);
+        }
+
+        String text = movie.getRating().getKp().substring(0, 3);
+        holder.textViewRating.setText(text);
     }
 
     @Override
