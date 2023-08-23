@@ -2,7 +2,9 @@ package com.gap.movies.data;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Logo {
+import java.io.Serializable;
+
+public class Logo implements Serializable {
     @SerializedName("url")
     private String url;
 

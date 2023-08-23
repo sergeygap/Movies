@@ -23,11 +23,15 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     private List<Movie> moviesList = new ArrayList<>();
     private OnReachEndListener onReachEndListener;
+    private OnMovieClickListener onMovieClickListener;
 
     public void setOnReachEndListener(OnReachEndListener onReachEndListener) {
         this.onReachEndListener = onReachEndListener;
     }
 
+    public void setOnMovieClickListener(OnMovieClickListener onMovieClickListener) {
+        this.onMovieClickListener = onMovieClickListener;
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     public void setMovies(List<Movie> movies) {
@@ -75,7 +79,21 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
             onReachEndListener.onReachEnd();
         }
 
+        clickOnItem(holder, movie);
+
+
     }
+
+    public void clickOnItem(MovieViewHolder holder, Movie movie) {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onMovieClickListener != null)
+                    onMovieClickListener.onMovieCLick(movie);
+            }
+        });
+    }
+
 
     @Override
     public int getItemCount() {
@@ -86,6 +104,9 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         void onReachEnd();
     }
 
+    public interface OnMovieClickListener {
+        void onMovieCLick(Movie movie);
+    }
 
     static class MovieViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imageViewLogo;
