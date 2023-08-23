@@ -15,7 +15,7 @@ public class Movie implements Serializable {
     private String year;
     @SerializedName("rating")
     private Rating rating;
-    @SerializedName("logo")
+    @SerializedName("poster")
     private Logo logo;
 
     public Movie(int id, String name, String description, String year, Rating rating, Logo logo) {
